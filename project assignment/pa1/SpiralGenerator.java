@@ -63,16 +63,17 @@ public class SpiralGenerator {
             x += unitLength * n;
             break;
          case 1:
-            y += unitLength * n;
+            y -= unitLength * n;
             break;
          case 2:
             x -= unitLength * n;
             break;
          case 3:
-            y -= unitLength * n;
+            y += unitLength * n;
             break;
       }
       counter += 1;
+      // The line is generated from "curPosition" to "to"
       Point2D.Double to = new Point2D.Double(x, y);
       Line2D.Double segment = new Line2D.Double(curPosition, to);
       curPosition = to;

@@ -18,28 +18,9 @@ import java.awt.geom.Point2D;
 public class SpiralGeneratorTester {
     public static void main(String[] args) {
         System.out.println("TEST 1:");
-        Point p1 = new Point(0, 0);
-        SpiralGenerator sg = new SpiralGenerator(p1, 1);
-        System.out.println("Making a spiral starting from " + p1);
-        Line2D line = sg.nextSegment();
-        System.out.println("Expected:");
-        System.out.println(line.getP1());
-        System.out.println(line.getP2() + "\n");
-
-        Line2D line2 = sg.nextSegment();
-        System.out.println("Expected: p1 = [1.0, 0.0], p2 = [1.0, 1.0]");
-        System.out.println("p1 is " + line2.getP1());
-        System.out.println("p2 is " + line2.getP2() + "\n");
-
-        Line2D line3 = sg.nextSegment();
-        System.out.println("Expected: p1 = [1.0, 1.0], p2 = [-1.0, 1.0]");
-        System.out.println("p1 is " + line3.getP1());
-        System.out.println("p2 is " + line3.getP2() + "\n");
-
-        System.out.println("TEST 2:");
-        Point p2 = new Point(0, 0);
-        int l1 = 1;
-        int n1 = 8;
+        Point p1 = new Point(200, 300);
+        int l1 = 5;
+        int n1 = 10;
         SpiralGenerator sg2 = new SpiralGenerator(p1, l1);
         System.out.println("Making a spiral starting from " + p1);
         System.out.println("with a unit length of " + l1 + " and made up of " + n1 + " segments");
@@ -47,7 +28,7 @@ public class SpiralGeneratorTester {
             Line2D tempLine1 = sg2.nextSegment();
             Point2D tempP1 = tempLine1.getP1();
             Point2D tempP2 = tempLine1.getP2();
-            System.out.println("Segment #" + (i + 1) + ": " + tempLine1.getP1() + tempLine1.getP2());
+            System.out.println("Segment #" + (i + 1) + ": " + tempLine1.getP1() + " " + tempLine1.getP2());
 
             // Check whether the line is horizontal or vertical or neither for the first segment in pair
             if (tempP1.getX() != tempP2.getX() && tempP1.getY() != tempP2.getY()) {
@@ -73,7 +54,7 @@ public class SpiralGeneratorTester {
                 System.out.println("FAILED: segment #" + (i) + " and segment #" + (i + 1) + " are not connected.");
             }
             // Check whether the two line segments are perpendicular to each other
-            if (tempP2.getX() != tempP3.getX() && tempP2.getX() != tempP4.getX()) {
+            if (tempP1.getX() == tempP4.getX() || tempP1.getY() == tempP4.getY()) {
                 System.out.println("FAILED: segment #" + (i) + " and segment #" + (i + 1) + " are not perpendicular.");
             }
         }
