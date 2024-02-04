@@ -1,48 +1,66 @@
-// Name:
-// USC NetID:
+// Name: Yilang Liang   
+// USC NetID: yilangli
 // CS 455 PA1
 // Spring 2024
 
 
-import javax.sound.sampled.Line;
 import java.awt.geom.Line2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
 /**
-   class SpiralGenerator
+   Class SpiralGenerator
    
-   Generates a "rectangular" spiral, using Java display coordinate system, moving 
-   outward from the center of the spiral in a counter-clockwise direction.
-   That is, it will head rightward on screen, then, upward, then left, then down, etc.
-  
-   Length of initial line is unitLength.
-   Padding between "layers" of the spiral is also unitLength.
+   It generates the spiral using Java display coordinate system, and the spiral 
+   will move outward in counter-clockwise direction, following directions of right
+   up, left and down relative to the screen.
    
-   NOTE: we have provided the public interface for this class.  Do not change
-   the public interface.  You can add private instance variables, constants, 
-   and private methods to the class.  You will also be completing the 
-   implementation of the methods given. 
+   The nextSegment() method generates one segment at a time based on the current
+   number of segements, unit length, and the current position of the segment
    
+   The way to use the class is to create a SpiralGenerator instance with specific 
+   startPosition and unitLength and call nextSegment() method to generate each line 
+   segment of the spiral
  */
 public class SpiralGenerator {
-
-   private Point startPosition;
-   private Point2D curPosition;
-   private final int unitLength;
-   private int counter;
-
    /**
-    * Creates a SpiralGenerator starting at startPosition, with length of first segnment and
-    * distance between "layers" both given as unitLength.  Both values are assuming the Java
-    * graphics coordinate system.
-    *
-    * @param startPosition starting point of the first segment in the spiral
-    * @param unitLength in pixels, must be > 0
-    * @param curPosition in Point2D, the current starting point for next line segement
-    * @param counter in int, counts the number of line segements generated
+      The starting point of the first segment in the spiral
     */
-
+   private Point startPosition;
+   /**
+      The current starting point for next line segement
+    */
+   private Point2D curPosition;
+   /**
+      The unit length for the segements in pixels, must be greater than 0
+    */
+   private final int unitLength;
+   /**
+      The counter that counts the number of line segements generated
+    */
+   private int counter;
+   /**
+      Directions represents the possible directions of the next line segment
+      Right, up, left and down are the specific directions of the line extension.
+      The spiral is generated following a sequence of right, up, left and down visually.
+    */
+   private enum Directions {
+      RIGHT,
+      UP,
+      LEFT,
+      DOWN
+   }
+   
+   /**
+      Constructor of the class which initializes an instance of the SpiralGenerator class 
+      starting at startPositio. It will also initialize the unit length of the spiral
+      Both values are in the Java graphics coordinate system. This constructor also sets 
+      the curPosition to the startPosition and sets the segments counter to 0.
+      
+      @param startPosition starting point of the first segment in the spiral, and it is 
+             also used as the initial curPosition for generating the line segment
+      @param unitLength in pixels, must be greater than 0
+    */
    public SpiralGenerator(Point startPosition, int unitLength) {
       this.startPosition = startPosition;
       this.curPosition = new Point2D.Double(this.startPosition.getX(), this.startPosition.getY());
@@ -51,33 +69,41 @@ public class SpiralGenerator {
    }
 
    /**
-      Return the coordinates of the next line segment in the spiral.
+      The method generates the next line segment of the spiral from the curPosition. 
+      The direction and length of the line depends on the number of line segments that 
+      are already generated and the unitLength for the segments. The spiral extends 
+      outward from the center with a direction of right, up, left, and down(visually). 
+      The counter and the curPosition are updated after each segment is created.
+      
+      @return a Line2D object that represents the next new segment of the spiral generated 
+              from curPosition to "to" position
     */
    public Line2D nextSegment() {
       double x = curPosition.getX();
       double y = curPosition.getY();
-      int s = counter % 4;
+      // Get the direction of the next segment visually according to the coordinate
+      Directions direction = Directions.values()[counter % 4];
+      // n checks the unit length of the current segment
       int n = counter / 2 + 1;
-      switch (s) {
-         case 0:
+      switch (direction) {
+         case RIGHT:
             x += unitLength * n;
             break;
-         case 1:
+         case UP:
             y -= unitLength * n;
             break;
-         case 2:
+         case LEFT:
             x -= unitLength * n;
             break;
-         case 3:
+         case DOWN:
             y += unitLength * n;
             break;
       }
       counter += 1;
-      // The line is generated from "curPosition" to "to"
+      // The line segment is generated starting from the curPosition to the "to" position
       Point2D.Double to = new Point2D.Double(x, y);
       Line2D.Double segment = new Line2D.Double(curPosition, to);
       curPosition = to;
       return segment;
    }
-
 }
