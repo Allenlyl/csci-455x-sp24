@@ -1,0 +1,143 @@
+// Name: Yilang Liang
+// USC NetID: yilangli
+// CSCI455 PA2
+// Spring 2024
+
+
+import java.awt.print.Book;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Class BookshelfTester
+ * Implements idea of arranging books into a bookshelf.
+ * Books on a bookshelf can only be accessed in a specific way so books don’t fall down;
+ * You can add or remove a book only when it’s on one of the ends of the shelf.
+ * However, you can look at any book on a shelf by giving its location (starting at 0).
+ * Books are identified only by their height; two books of the same height can be
+ * thought of as two copies of the same book.
+ */
+
+public class BookshelfTester {
+
+    public static void main (String[] args) {
+        // Test for Constructor
+        emptyConstructorTest();
+        ArrayList<Integer> books = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        constructorTest(books);
+
+        // Test for toString()
+        Bookshelf bookshelf = new Bookshelf(books);
+        toStringTest(bookshelf, books);
+
+        // Test for getHeight()
+        getHeightTest(bookshelf, books);
+    }
+
+    /**
+     * Test for empty constructor
+     *
+     * bookshelf should be initialized but it should be empty and size should be 0
+     */
+    private static void emptyConstructorTest() {
+        System.out.println("Empty constructor test: ");
+        Bookshelf bookshelf = new Bookshelf();
+        if (bookshelf != null && bookshelf.size() == 0) {
+            System.out.println("PASSED");
+        } else {
+            System.out.println("FAILED");
+        }
+    }
+
+    /**
+     * Test for empty constructor
+     *
+     * bookshelf should be initialized but it should be empty and size should be 0
+     */
+    private static void constructorTest(ArrayList<Integer> books) {
+        System.out.println("Constructor test: ");
+        int size = books.size();
+        Bookshelf bookshelf = new Bookshelf(books);
+        if (bookshelf.size() == size) {
+            for (int i = 0; i < size; i++) {
+                if (books.get(i) == bookshelf.getHeight(i)) {
+                    System.out.println("PASSED: Book " + i + " on the shelf matches book " + i + " from the pile.");
+                } else {
+                    System.out.println("FAILED: Book " + i + " on the shelf does not match book " + i + " from the pile.");
+                    return;
+                }
+            }
+            System.out.println("PASSED: All books on the shelf match with books from pile.");
+        } else {
+            System.out.println("FAILED: Size does not match.");
+        }
+    }
+
+    /**
+     * Test for empty constructor
+     *
+     * bookshelf should be initialized but it should be empty and size should be 0
+     */
+    private static void toStringTest(Bookshelf bookshelf, ArrayList<Integer> books) {
+        System.out.println("toString() test: ");
+        String output = bookshelf.toString();
+        String expected = books.toString();
+        if (output.equals(expected)) {
+            System.out.println("PASSED: output is " + output + "; Expected is " + expected + ".");
+        } else {
+            System.out.println("FAILED: output is " + output + "; Expected is " + expected + ".");
+        }
+    }
+
+    /**
+     * Test for getHeight
+     *
+     * bookshelf should be initialized but it should be empty and size should be 0
+     */
+    private static void getHeightTest(Bookshelf bookshelf, ArrayList<Integer> books) {
+        System.out.println("getHeight() test: ");
+        for (int i = 0; i < books.size(); i++) {
+            int curHeight = bookshelf.getHeight(i);
+            int expected = books.get(i);
+            if (curHeight == expected) {
+                System.out.println("PASSED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
+            } else {
+                System.out.println("FAILED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
+                return;
+            }
+        }
+
+        // books: [1, 8, 10, 23, 5]
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 8, 10, 23, 5));
+        Bookshelf test = new Bookshelf(list);
+        for (int i = 0; i < test.size(); i++) {
+            int curHeight = test.getHeight(i);
+            int expected = list.get(i);
+            if (curHeight == expected) {
+                System.out.println("PASSED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
+            } else {
+                System.out.println("FAILED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
+                return;
+            }
+        }
+
+        // books: [1, 8]
+        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 8));
+        Bookshelf test1 = new Bookshelf(list1);
+        int curHeight = test1.getHeight(0);
+        if (test1.getHeight(0) == 1) {
+            System.out.println("PASSED: " + 0 + "th book has height of " + curHeight + "; Expected is " + 1 + ".");
+        } else {
+            System.out.println("FAILED: " + 0 + "th book has height of " + curHeight + "; Expected is " + 1 + ".");
+        }
+        if (test1.getHeight(1) == 8) {
+            System.out.println("PASSED: " + 1 + "th book has height of " + curHeight + "; Expected is " + 8 + ".");
+        } else {
+            System.out.println("FAILED: " + 1 + "th book has height of " + curHeight + "; Expected is " + 8 + ".");
+        }
+
+    }
+
+
+}

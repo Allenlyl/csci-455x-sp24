@@ -1,8 +1,12 @@
-// Name: 
-// USC NetID: 
+// Name: Yilang Liang
+// USC NetID: yilangli
 // CSCI455 PA2
 // Spring 2024
 
+
+import java.awt.print.Book;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Class Bookshelf
@@ -24,14 +28,14 @@ public class Bookshelf {
    */
    
    // <add instance variables here>
-
+   private ArrayList<Integer> bookshelf;
 
    /**
     * Creates an empty Bookshelf object i.e. with no books
     */
    public Bookshelf() {
-      
-      assert isValidBookshelf();  // sample assert statement (you will be adding more of these calls)
+      this.bookshelf = new ArrayList<>();
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the constructor";
    }
 
    /**
@@ -42,8 +46,19 @@ public class Bookshelf {
     * representing the height of each book.
     */
    public Bookshelf(ArrayList<Integer> pileOfBooks) {
- 
+      this.bookshelf = new ArrayList<>(pileOfBooks);
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the constructor";
    }
+
+//   /**
+//    * Return an ArrayList of books that are on the bookshelf
+//    * 好像不能加这个function
+//    * PRE: bookshelf is a valid Bookshelf
+//    */
+//   public ArrayList<Integer> toArrayList() {
+//      assert isValidBookshelf() : "Bookshelf is invalid after calling the toArrayList()";
+//      return this.bookshelf;
+//   }
 
    /**
     * Inserts book with specified height at the start of the Bookshelf, i.e., it
@@ -52,7 +67,8 @@ public class Bookshelf {
     * PRE: height > 0 (height of book is always positive)
     */
    public void addFront(int height) {
-      
+      this.bookshelf.add(0, height);
+      assert isValidBookshelf() : "Bookshelf is invalid after calling addFont()";
    }
 
    /**
@@ -61,7 +77,9 @@ public class Bookshelf {
     * PRE: height > 0 (height of book is always positive)
     */
    public void addLast(int height) {
-      
+      this.bookshelf.add(height);
+      assert isValidBookshelf() : "Bookshelf is invalid after calling addLast()";
+
    }
 
    /**
@@ -71,8 +89,7 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeFront() {
-      
-      return 0;   // dummy code to get stub to compile
+      return this.bookshelf.remove(0);
       
    }
 
@@ -83,17 +100,16 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeLast() {
-      return 0;   // dummy code to get stub to compile      
+      return this.bookshelf.remove(bookshelf.size() - 1);
    }
 
-   /*
+   /**
     * Gets the height of the book at the given position.
     * 
     * PRE: 0 <= position < this.size()
     */
    public int getHeight(int position) {
-      
-      return 0;   // dummy code to get stub to compile
+      return this.bookshelf.get(position);
       
    }
 
@@ -101,8 +117,7 @@ public class Bookshelf {
     * Returns number of books on the this Bookshelf.
     */
    public int size() {
-      
-      return 0;   // dummy code to get stub to compile
+      return this.bookshelf.size();
 
    }
 
@@ -112,9 +127,12 @@ public class Bookshelf {
     * by example here:  “[7, 33, 5, 4, 3]”
     */
    public String toString() {
-      
-      return "";   // dummy code to get stub to compile
-
+//      String output = "";
+//      for (int book : this.bookshelf) {
+//         output += book + ", ";
+//      }
+//      return "[" + output + "]";
+      return this.bookshelf.toString();
    }
 
    /**
@@ -122,18 +140,36 @@ public class Bookshelf {
     * (Note: this is an accessor; it does not change the bookshelf.)
     */
    public boolean isSorted() {
-      
-      return false;  // dummy code to get stub to compile
+      int prev = this.bookshelf.get(0);
+      for (int book : this.bookshelf) {
+         if (book < prev) {
+            return false;
+         }
+         prev = book;
+      }
+      return true;
    }
 
    /**
     * Returns true iff the Bookshelf data is in a valid state.
-    * (See representation invariant comment for more details.)
+    * Representation invariant:
+    * All elements in bookshelf should have be a positive integer
     */
    private boolean isValidBookshelf() {
-      
-      return false;  // dummy code to get stub to compile
-
+      for (int book : this.bookshelf) {
+         if (book <= 0) {
+            return false;
+         }
+      }
+      return true;
    }
 
+   public static void main(String[] args) {
+      Bookshelf bookshelf = new Bookshelf();
+      for (int i = -2; i < 5; i++) {
+         bookshelf.addFront(i);
+      }
+      System.out.println(bookshelf.isSorted());
+      System.out.println(bookshelf.toString());
+   }
 }
