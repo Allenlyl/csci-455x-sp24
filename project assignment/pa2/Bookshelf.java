@@ -68,7 +68,7 @@ public class Bookshelf {
     */
    public void addFront(int height) {
       this.bookshelf.add(0, height);
-      assert isValidBookshelf() : "Bookshelf is invalid after calling addFont()";
+      assert isValidBookshelf() : "Bookshelf is invalid after calling addFront()";
    }
 
    /**
@@ -89,8 +89,10 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeFront() {
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the removeFront()";
+
       return this.bookshelf.remove(0);
-      
+
    }
 
    /**
@@ -100,6 +102,8 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeLast() {
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the removeLast()";
+
       return this.bookshelf.remove(bookshelf.size() - 1);
    }
 
@@ -109,14 +113,17 @@ public class Bookshelf {
     * PRE: 0 <= position < this.size()
     */
    public int getHeight(int position) {
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the getHeight";
+
       return this.bookshelf.get(position);
-      
    }
 
    /**
     * Returns number of books on the this Bookshelf.
     */
    public int size() {
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the size";
+
       return this.bookshelf.size();
 
    }
@@ -132,6 +139,8 @@ public class Bookshelf {
 //         output += book + ", ";
 //      }
 //      return "[" + output + "]";
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the toString";
+
       return this.bookshelf.toString();
    }
 
@@ -147,6 +156,8 @@ public class Bookshelf {
          }
          prev = book;
       }
+      assert isValidBookshelf() : "Bookshelf is invalid after calling the isSorted";
+
       return true;
    }
 

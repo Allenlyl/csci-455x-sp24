@@ -17,6 +17,9 @@ import java.util.Arrays;
  * However, you can look at any book on a shelf by giving its location (starting at 0).
  * Books are identified only by their height; two books of the same height can be
  * thought of as two copies of the same book.
+ *
+ * 1.7
+ * 2.3
  */
 
 public class BookshelfTester {
@@ -33,10 +36,30 @@ public class BookshelfTester {
 
         // Test for getHeight()
         getHeightTest(bookshelf, books);
+
+        // Test for addFont()
+        ArrayList<Integer> books1 = new ArrayList<>(Arrays.asList(1, 1, 2, 3, 4, 5));
+        addFrontTest(bookshelf, 1, books1);
+
+        // Test for addLast()
+        ArrayList<Integer> books2 = new ArrayList<>(Arrays.asList(1, 1, 2, 3, 4, 5, 6));
+        addLastTest(bookshelf, 6, books2);
+
+        // Test for removeLast()
+        removeLastTest(bookshelf, books1);
+
+        // Test for removeFront()
+        removeFrontTest(bookshelf, books);
+
+        // Test for isSorted()
+        isSortedTest(bookshelf, true);
+
+        // Test for size()
+        sizeTest(bookshelf, 5);
     }
 
     /**
-     * Test for empty constructor
+    * Test for empty constructor
      *
      * bookshelf should be initialized but it should be empty and size should be 0
      */
@@ -73,7 +96,6 @@ public class BookshelfTester {
             System.out.println("FAILED: Size does not match.");
         }
     }
-
     /**
      * Test for empty constructor
      *
@@ -93,7 +115,7 @@ public class BookshelfTester {
     /**
      * Test for getHeight
      *
-     * bookshelf should be initialized but it should be empty and size should be 0
+     * The height of the books on the bookshelf should be the same as the books in pile in sequence
      */
     private static void getHeightTest(Bookshelf bookshelf, ArrayList<Integer> books) {
         System.out.println("getHeight() test: ");
@@ -136,8 +158,102 @@ public class BookshelfTester {
         } else {
             System.out.println("FAILED: " + 1 + "th book has height of " + curHeight + "; Expected is " + 8 + ".");
         }
-
     }
 
+    /**
+     * Test for addFront
+     *
+     * The height of the books on the bookshelf should be the same as the books in pile in sequence
+     */
+    private static void addFrontTest(Bookshelf bookshelf, int book, ArrayList<Integer> books) {
+        System.out.println("addFront() test: ");
+        String expected = books.toString();
+        bookshelf.addFront(book);
+        String after = bookshelf.toString();
+        if (after.equals(expected)) {
+            System.out.println("PASSED: Expected after inserting book " + book + "is " + expected + ". The actual is " + after + ".");
+        } else {
+            System.out.println("FAILED: Expected after inserting book " + book + "is " + expected + ". The actual is " + after + ".");
+        }
+    }
 
+    /**
+     * Test for addLast
+     *
+     * The height of the books on the bookshelf should be the same as the books in pile in sequence
+     */
+    private static void addLastTest(Bookshelf bookshelf, int book, ArrayList<Integer> books) {
+        System.out.println("addLast() test: ");
+        String expected = books.toString();
+        bookshelf.addLast(book);
+        String after = bookshelf.toString();
+        if (after.equals(expected)) {
+            System.out.println("PASSED: Expected after inserting book " + book + "is " + expected + ". The actual is " + after + ".");
+        } else {
+            System.out.println("FAILED: Expected after inserting book " + book + "is " + expected + ". The actual is " + after + ".");
+        }
+    }
+
+    /**
+     * Test for removeFront
+     *
+     * The first book should be removed from the bookshelf
+     */
+    private static void removeFrontTest(Bookshelf bookshelf, ArrayList<Integer> books) {
+        System.out.println("removeFront() test: ");
+        String expected = books.toString();
+        bookshelf.removeFront();
+        String after = bookshelf.toString();
+        if (after.equals(expected)) {
+            System.out.println("PASSED: Expected after removing is " + expected + ". The actual is " + after + ".");
+        } else {
+            System.out.println("FAILED: Expected after removing is " + expected + ". The actual is " + after + ".");
+        }
+    }
+
+    /**
+     * Test for removeLast
+     *
+     * The last book should be removed from the bookshelf
+     */
+    private static void removeLastTest(Bookshelf bookshelf, ArrayList<Integer> books) {
+        System.out.println("removeLast() test: ");
+        String expected = books.toString();
+        bookshelf.removeLast();
+        String after = bookshelf.toString();
+        if (after.equals(expected)) {
+            System.out.println("PASSED: Expected after removing is " + expected + ". The actual is " + after + ".");
+        } else {
+            System.out.println("FAILED: Expected after removing is " + expected + ". The actual is " + after + ".");
+        }
+    }
+
+    /**
+     * Test for isSorted()
+     *
+     * Identify if the book is sorted
+     * @param expected is if the bookshelf is sorted or not
+     */
+    private static void isSortedTest(Bookshelf bookshelf, Boolean expected) {
+        System.out.println("isSorted() test: ");
+        if (bookshelf.isSorted() == expected) {
+            System.out.println("PASSED: isSorted() works.");
+        } else {
+            System.out.println("FAILED: isSorted() does not works.");
+        }
+    }
+
+    /**
+     * Test for isSorted()
+     *
+     * Identify if the book is sorted
+     */
+    private static void sizeTest(Bookshelf bookshelf, int size) {
+        System.out.println("size() test: ");
+        if (bookshelf.size() == size) {
+            System.out.println("PASSED: size() provides the correct size of the bookshelf.");
+        } else {
+            System.out.println("FAILED: size() does not provide the correct size of the bookshelf.");
+        }
+    }
 }
