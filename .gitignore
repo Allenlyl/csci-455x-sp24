@@ -1,0 +1,8 @@
+# IDE and editor folders
+.idea/
+# IntelliJ module files
+*.iml
+# Compiled Java classes
+*.class
+out/
+.DS_Store
