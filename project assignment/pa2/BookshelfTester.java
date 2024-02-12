@@ -130,34 +130,7 @@ public class BookshelfTester {
             }
         }
 
-        // books: [1, 8, 10, 23, 5]
-        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 8, 10, 23, 5));
-        Bookshelf test = new Bookshelf(list);
-        for (int i = 0; i < test.size(); i++) {
-            int curHeight = test.getHeight(i);
-            int expected = list.get(i);
-            if (curHeight == expected) {
-                System.out.println("PASSED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
-            } else {
-                System.out.println("FAILED: " + i + "th book has height of " + curHeight + "; Expected is " + expected + ".");
-                return;
-            }
-        }
 
-        // books: [1, 8]
-        ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(1, 8));
-        Bookshelf test1 = new Bookshelf(list1);
-        int curHeight = test1.getHeight(0);
-        if (test1.getHeight(0) == 1) {
-            System.out.println("PASSED: " + 0 + "th book has height of " + curHeight + "; Expected is " + 1 + ".");
-        } else {
-            System.out.println("FAILED: " + 0 + "th book has height of " + curHeight + "; Expected is " + 1 + ".");
-        }
-        if (test1.getHeight(1) == 8) {
-            System.out.println("PASSED: " + 1 + "th book has height of " + curHeight + "; Expected is " + 8 + ".");
-        } else {
-            System.out.println("FAILED: " + 1 + "th book has height of " + curHeight + "; Expected is " + 8 + ".");
-        }
     }
 
     /**

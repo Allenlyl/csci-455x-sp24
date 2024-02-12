@@ -23,11 +23,11 @@ public class Bookshelf {
    /**
       Representation invariant:
 
-      <put rep. invar. comment here>
+      The elements of the bookshelf represent heights of the books
+      The height of each book must be greater than 0
 
    */
-   
-   // <add instance variables here>
+
    private ArrayList<Integer> bookshelf;
 
    /**
@@ -79,7 +79,6 @@ public class Bookshelf {
    public void addLast(int height) {
       this.bookshelf.add(height);
       assert isValidBookshelf() : "Bookshelf is invalid after calling addLast()";
-
    }
 
    /**
@@ -89,10 +88,9 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeFront() {
+      int height = this.bookshelf.remove(0);
       assert isValidBookshelf() : "Bookshelf is invalid after calling the removeFront()";
-
-      return this.bookshelf.remove(0);
-
+      return height;
    }
 
    /**
@@ -102,9 +100,9 @@ public class Bookshelf {
     * PRE: this.size() > 0 i.e. can be called only on non-empty BookShelf
     */
    public int removeLast() {
+      int height = this.bookshelf.remove(bookshelf.size() - 1);
       assert isValidBookshelf() : "Bookshelf is invalid after calling the removeLast()";
-
-      return this.bookshelf.remove(bookshelf.size() - 1);
+      return height;
    }
 
    /**
@@ -113,19 +111,18 @@ public class Bookshelf {
     * PRE: 0 <= position < this.size()
     */
    public int getHeight(int position) {
+      int height = this.bookshelf.get(position);
       assert isValidBookshelf() : "Bookshelf is invalid after calling the getHeight";
-
-      return this.bookshelf.get(position);
+      return height;
    }
 
    /**
     * Returns number of books on the this Bookshelf.
     */
    public int size() {
+      int size = this.bookshelf.size();
       assert isValidBookshelf() : "Bookshelf is invalid after calling the size";
-
-      return this.bookshelf.size();
-
+      return size;
    }
 
    /**
@@ -134,14 +131,10 @@ public class Bookshelf {
     * by example here:  “[7, 33, 5, 4, 3]”
     */
    public String toString() {
-//      String output = "";
-//      for (int book : this.bookshelf) {
-//         output += book + ", ";
-//      }
-//      return "[" + output + "]";
+      String output = this.bookshelf.toString();
       assert isValidBookshelf() : "Bookshelf is invalid after calling the toString";
 
-      return this.bookshelf.toString();
+      return output;
    }
 
    /**
@@ -157,7 +150,6 @@ public class Bookshelf {
          prev = book;
       }
       assert isValidBookshelf() : "Bookshelf is invalid after calling the isSorted";
-
       return true;
    }
 
@@ -173,14 +165,5 @@ public class Bookshelf {
          }
       }
       return true;
-   }
-
-   public static void main(String[] args) {
-      Bookshelf bookshelf = new Bookshelf();
-      for (int i = -2; i < 5; i++) {
-         bookshelf.addFront(i);
-      }
-      System.out.println(bookshelf.isSorted());
-      System.out.println(bookshelf.toString());
    }
 }
