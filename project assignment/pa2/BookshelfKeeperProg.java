@@ -16,7 +16,7 @@ public class BookshelfKeeperProg {
       Scanner scanner = new Scanner(System.in);
       BookshelfKeeper bookshelfKeeper = bookshelfKeeperInitialization(scanner);
 
-      //promptForInput(scanner, bookshelfKeeper);
+      promptForInput(scanner, bookshelfKeeper);
    }
 
    /**
@@ -28,20 +28,28 @@ public class BookshelfKeeperProg {
     * operation.  Pick or put operations are performed with minimum number of such adds or removes.
     */
    private static BookshelfKeeper bookshelfKeeperInitialization(Scanner scanner) {
-      ArrayList<Integer> books = new ArrayList<>();
       System.out.println("Please enter initial arrangement of books followed by newline:");
+      // get the input and turns it into arrays of string separated by empty space
       String input = scanner.nextLine();
-      if (input.isEmpty()) {
-         System.out.println("empty");
-      } else {
-
-      }
       String[] strings = input.split("\\s+");
-      if (strings.length > 0) {
-         for (String s : strings) {
-            books.add(Integer.parseInt(s));
-         }
+      // if the input is empty or length of strings is 0
+      if (input.isEmpty() || strings.length == 0) {
+         BookshelfKeeper bookshelfKeeper = new BookshelfKeeper();
+         System.out.println(bookshelfKeeper.toString());
+         return new BookshelfKeeper();
       }
+      // strings is not empty, parse string in strings as int, check if int is positive
+      ArrayList<Integer> books = new ArrayList<>();
+      for (String s : strings) {
+         int num = Integer.parseInt(s);
+         if (num < 0) {
+            System.out.println("ERROR: Height of a book must be positive.");
+            System.out.println("Exiting Program.");
+            System.exit(0);
+         }
+         books.add(num);
+      }
+      // check if the books are in non-decreasing order
       Bookshelf bookshelf = new Bookshelf(books);
       if (!bookshelf.isSorted()) {
          System.out.println("ERROR: Heights must be specified in non-decreasing order.");
@@ -66,12 +74,16 @@ public class BookshelfKeeperProg {
       while (true){
          String function = scanner.next();
          int index = scanner.nextInt();
-
+         // function can be pick, put, end, and others
          if (function.equals("pick")) {
-            pick(index);
+            pick(index, bookshelfKeeper);
          } else if (function.equals("put")) {
-            put(index);
+            put(index, bookshelfKeeper);
          } else if (function.equals("end")){
+            System.out.println("Exiting Program.");
+            System.exit(0);
+         } else {
+            System.out.println("ERROR: Invalid command. Valid commands are pick, put, or end.");
             System.out.println("Exiting Program.");
             System.exit(0);
          }
@@ -79,12 +91,24 @@ public class BookshelfKeeperProg {
 
    }
 
-   private static void pick(int index) {
-      return;
+   private static void pick(int index, BookshelfKeeper bookshelfKeeper) {
+      if (index >= bookshelfKeeper.getNumBooks()) {
+         System.out.println("ERROR: Entered pick operation is invalid on this shelf.");
+         System.out.println("Exiting Program.");
+      } else {
+         bookshelfKeeper.pickPos(index);
+         System.out.println(bookshelfKeeper.toString());
+      }
    }
 
-   private static void put(int index) {
-      return;
+   private static void put(int height, BookshelfKeeper bookshelfKeeper) {
+      if (height < 0) {
+         System.out.println("ERROR: Height of a book must be positive.");
+         System.out.println("Exiting Program.");
+      } else {
+         bookshelfKeeper.putHeight(height);
+         System.out.println(bookshelfKeeper.toString());
+      }
    }
 
 }

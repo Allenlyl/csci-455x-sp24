@@ -18,8 +18,6 @@ import java.util.Arrays;
  * Books are identified only by their height; two books of the same height can be
  * thought of as two copies of the same book.
  *
- * 1.7
- * 2.3
  */
 
 public class BookshelfTester {
