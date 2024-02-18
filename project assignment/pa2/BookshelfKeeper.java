@@ -70,7 +70,7 @@ public class BookshelfKeeper {
       // if 3 size, put in position 1, 3/2 = 1, 1<=1, start from front
       // if 5 size, put in position 2, 2/2 = 2, 2<=2, start from front
       // Start removing from front of the shelf
-      if (position <= size / 2) {
+      if (position < size / 2) {
          for (int i = 0; i < position; i++) {
             temp.addLast(this.bookshelf.removeFront());
             counter += 1;
@@ -113,8 +113,10 @@ public class BookshelfKeeper {
       int size = this.bookshelf.size();
       int counter = 0;
       Bookshelf temp = new Bookshelf();
-      int position = findInsertPosition(height);
-      if (position <= size / 2) {
+      int[] insertPosition = findInsertPosition(height);
+      int fromFront = insertPosition[0];
+      int position = insertPosition[1];
+      if (fromFront == 1) {
          for (int i = 0; i < position; i++) {
             temp.addLast(this.bookshelf.removeFront());
             counter += 1;
@@ -149,7 +151,7 @@ public class BookshelfKeeper {
     *
     * PRE: height > 0
     */
-   private int findInsertPosition(int height) {
+   private int[] findInsertPosition(int height) {
       int size = this.bookshelf.size();
       int l = 0;
       int r = size - 1;
@@ -165,7 +167,17 @@ public class BookshelfKeeper {
          }
          r--;
       }
-      return l + 1 <= size - r ? l : r;
+      if (l <= size - 1 - r) {
+         System.out.println("we are moving from the front add book before index " + l);
+         System.out.println("step should be " + (l * 2 + 1));
+      } else {
+         System.out.println("we are moving from the back add book after index " + r);
+         System.out.println("step should be " + ((size - 1 - r) * 2 + 1));
+
+      }
+      // return [front?, index]
+      // 1 if it is starting from the front, 0 from the back
+      return l <= size - 1 - r ? new int[]{1, l} : new int[]{0, r};
    }
 
    /**
@@ -175,6 +187,15 @@ public class BookshelfKeeper {
     */
    public int getTotalOperations() {
       return this.totalOperations;
+   }
+
+   /**
+    * Returns the total number of calls made to mutators on the contained bookshelf
+    * so far, i.e., all the ones done to perform all of the pick and put operations
+    * that have been requested up to now.
+    */
+   public int getLastOperations() {
+      return this.lastOperations;
    }
 
    /**
@@ -195,7 +216,7 @@ public class BookshelfKeeper {
     */
    public String toString() {
       String output = this.bookshelf.toString();
-      output += " " + this.lastOperations + " " + this.totalOperations;
+      output += " " + this.getLastOperations() + " " + this.getTotalOperations();
       return output;
       
    }

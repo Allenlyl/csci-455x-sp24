@@ -72,9 +72,17 @@ public class BookshelfKeeperProg {
    private static void promptForInput(Scanner scanner, BookshelfKeeper bookshelfKeeper) {
       System.out.println("Type pick <index> or put <height> followed by newline. Type end to exit.");
       while (true){
-         String function = scanner.next();
-         int index = scanner.nextInt();
-         // function can be pick, put, end, and others
+         String input = scanner.nextLine();
+         String[] strings = input.split("\\s+");
+         // if the input is empty or length of strings is not two
+         if (input.isEmpty() || strings.length != 2) {
+            System.out.println("ERROR: Invalid command. Valid commands are pick, put, or end.");
+            System.out.println("Exiting Program.");
+            System.exit(0);
+         }
+         String function = strings[0];
+         int index = Integer.parseInt(strings[1]);
+         // function can be "pick", "put", "end", and others
          if (function.equals("pick")) {
             pick(index, bookshelfKeeper);
          } else if (function.equals("put")) {
@@ -88,13 +96,13 @@ public class BookshelfKeeperProg {
             System.exit(0);
          }
       }
-
    }
 
    private static void pick(int index, BookshelfKeeper bookshelfKeeper) {
       if (index >= bookshelfKeeper.getNumBooks()) {
          System.out.println("ERROR: Entered pick operation is invalid on this shelf.");
          System.out.println("Exiting Program.");
+         System.exit(0);
       } else {
          bookshelfKeeper.pickPos(index);
          System.out.println(bookshelfKeeper.toString());
@@ -105,6 +113,7 @@ public class BookshelfKeeperProg {
       if (height < 0) {
          System.out.println("ERROR: Height of a book must be positive.");
          System.out.println("Exiting Program.");
+         System.exit(0);
       } else {
          bookshelfKeeper.putHeight(height);
          System.out.println(bookshelfKeeper.toString());
