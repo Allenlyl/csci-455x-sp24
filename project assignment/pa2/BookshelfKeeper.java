@@ -1,5 +1,5 @@
-// Name: 
-// USC NetID: 
+// Name: Yilang Liang
+// USC NetID: yilangli
 // CSCI455 PA2
 // Spring 2024
 
@@ -12,18 +12,19 @@ import java.awt.print.Book;
  * Enables users to perform efficient putPos or pickHeight operation on a bookshelf of books kept in 
  * non-decreasing order by height, with the restriction that single books can only be added 
  * or removed from one of the two *ends* of the bookshelf to complete a higher level pick or put 
- * operation.  Pick or put operations are performed with minimum number of such adds or removes.
+ * operation. Pick or put operations are performed with minimum number of such adds or removes.
  */
 public class BookshelfKeeper {
 
    /**
-      Representation invariant:
-
-      All the books on the shelf should be sorted in non-decreasing order
-
-   */
-   
-   // <add instance variables here>
+    * Representation invariant:
+    *
+    * All the books on the shelf is represented by bookshelf which record books by their heights
+    * Books in the bookshelf should be sorted in non-decreasing order
+    * The total counts of operations of mutators on the bookshelf is totalOperations
+    * The last counts of operations of mutators after performing each method is lastOperation
+    * Both totalOperation and lastOperation are non-negative integer
+    */
    private Bookshelf bookshelf;
    private int totalOperations;
    private int lastOperations;
@@ -44,12 +45,9 @@ public class BookshelfKeeper {
     * PRE: sortedBookshelf.isSorted() is true.
     */
    public BookshelfKeeper(Bookshelf sortedBookshelf) {
-      this.bookshelf = new Bookshelf();
+      this.bookshelf = sortedBookshelf;
       this.totalOperations = 0;
       this.lastOperations = 0;
-      for (int i = 0; i < sortedBookshelf.size(); i++) {
-         bookshelf.addLast(sortedBookshelf.getHeight(i));
-      }
    }
 
    /**
@@ -65,33 +63,26 @@ public class BookshelfKeeper {
       int size = this.bookshelf.size();
       Bookshelf temp = new Bookshelf();
       int counter = 0;
-      // if 4 size, put in position 1, 4/2 = 2, 1<2, start from front
-      // if 4 size, put in position 2, 4/2 = 2, 2<=2, start from front
-      // if 3 size, put in position 1, 3/2 = 1, 1<=1, start from front
-      // if 5 size, put in position 2, 2/2 = 2, 2<=2, start from front
-      // Start removing from front of the shelf
       if (position < size / 2) {
          for (int i = 0; i < position; i++) {
             temp.addLast(this.bookshelf.removeFront());
-            counter += 1;
          }
          this.bookshelf.removeFront();
-         counter += 1;
          for (int i = 0; i < position; i++) {
             this.bookshelf.addFront(temp.removeLast());
-            counter += 1;
          }
+         // operations(front) = taking out books + pick target book + putting back books
+         counter += 1 + position * 2;
       } else {
          for (int i = size - 1; i > position; i--) {
             temp.addFront(this.bookshelf.removeLast());
-            counter += 1;
          }
          this.bookshelf.removeLast();
-         counter += 1;
          for (int i = size - 1; i > position; i--) {
             this.bookshelf.addLast(temp.removeFront());
-            counter += 1;
          }
+         // operations(back) = taking out books + pick target book + putting back books
+         counter += 1 + (size - 1 - position) * 2;
       }
       this.totalOperations += counter;
       this.lastOperations = counter;
@@ -113,31 +104,30 @@ public class BookshelfKeeper {
       int size = this.bookshelf.size();
       int counter = 0;
       Bookshelf temp = new Bookshelf();
+      // Find the insert position, the return value is [isFromFront, position]
       int[] insertPosition = findInsertPosition(height);
-      int fromFront = insertPosition[0];
+      int isFromFront = insertPosition[0];
       int position = insertPosition[1];
-      if (fromFront == 1) {
+      if (isFromFront == 1) {
          for (int i = 0; i < position; i++) {
             temp.addLast(this.bookshelf.removeFront());
-            counter += 1;
          }
          this.bookshelf.addFront(height);
-         counter += 1;
          for (int i = 0; i < position; i++) {
             this.bookshelf.addFront(temp.removeLast());
-            counter += 1;
          }
+         // operations(front) = taking out books + pick target book + putting back books
+         counter += 1 + position * 2;
       } else {
          for (int i = size - 1; i > position; i--) {
             temp.addFront(this.bookshelf.removeLast());
-            counter += 1;
          }
          this.bookshelf.addLast(height);
-         counter += 1;
          for (int i = size - 1; i > position; i--) {
             this.bookshelf.addLast(temp.removeFront());
-            counter += 1;
          }
+         // operations(back) = taking out books + pick target book + putting back books
+         counter += 1 + (size - 1 - position) * 2;
       }
       this.totalOperations += counter;
       this.lastOperations = counter;
@@ -146,7 +136,7 @@ public class BookshelfKeeper {
    }
 
    /**
-    * Return the index of the position for inserting the new book
+    * Return the index of the position for inserting the new book with "height"
     * Return position should be 0 <= position < size()
     *
     * PRE: height > 0
@@ -173,9 +163,9 @@ public class BookshelfKeeper {
       } else {
          System.out.println("we are moving from the back add book after index " + r);
          System.out.println("step should be " + ((size - 1 - r) * 2 + 1));
-
       }
-      // return [front?, index]
+      // return [isFromFront, position]
+      // compare moving distance from the front and from the back, return the closer one
       // 1 if it is starting from the front, 0 from the back
       return l <= size - 1 - r ? new int[]{1, l} : new int[]{0, r};
    }
@@ -185,16 +175,15 @@ public class BookshelfKeeper {
     * so far, i.e., all the ones done to perform all of the pick and put operations
     * that have been requested up to now.
     */
-   public int getTotalOperations() {
+   private int getTotalOperations() {
       return this.totalOperations;
    }
 
    /**
-    * Returns the total number of calls made to mutators on the contained bookshelf
-    * so far, i.e., all the ones done to perform all of the pick and put operations
-    * that have been requested up to now.
+    * Returns the last number of calls made to mutators on the last function call
+    * i.e., all the ones done to perform all of the pick and put operations
     */
-   public int getLastOperations() {
+   private int getLastOperations() {
       return this.lastOperations;
    }
 
@@ -202,7 +191,7 @@ public class BookshelfKeeper {
     * Returns the number of books on the contained bookshelf.
     */
    public int getNumBooks() {
-       return this.bookshelf.size();   // dummy code to get stub to compile
+       return this.bookshelf.size();
    }
 
    /**
@@ -212,7 +201,6 @@ public class BookshelfKeeper {
     * followed by the total number of such calls made since we created this BookshelfKeeper.
     * 
     * Example return string showing required format: “[1, 3, 5, 7, 33] 4 10”
-    * 
     */
    public String toString() {
       String output = this.bookshelf.toString();
@@ -226,28 +214,7 @@ public class BookshelfKeeper {
     * (See representation invariant comment for details.)
     */
    private boolean isValidBookshelfKeeper() {
-      return this.bookshelf.isSorted();
-   }
-
-   public static void main(String[] args) {
-      // [1, 2, 3, 4, 5, 6]
-      Bookshelf bookshelf = new Bookshelf();
-      for (int i = 1; i < 7; i++) {
-         bookshelf.addLast(i);
-      }
-      BookshelfKeeper bookshelfKeeper = new BookshelfKeeper(bookshelf);
-      System.out.println(bookshelfKeeper.toString());
-      // take out 3
-      bookshelfKeeper.pickPos(2);
-      System.out.println(bookshelfKeeper.toString());
-      bookshelfKeeper.putHeight(5);
-      System.out.println(bookshelfKeeper.toString());
-      bookshelfKeeper.putHeight(5);
-      System.out.println(bookshelfKeeper.toString());
-      bookshelfKeeper.putHeight(4);
-      System.out.println(bookshelfKeeper.toString());
-      bookshelfKeeper.pickPos(5);
-      System.out.println(bookshelfKeeper.toString());
+      return this.bookshelf.isSorted() && this.lastOperations >= 0 && this.totalOperations >= 0;
    }
 
 }

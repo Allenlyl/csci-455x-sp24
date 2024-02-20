@@ -10,13 +10,14 @@ import java.util.ArrayList;
 
 /**
  * Class Bookshelf
+ *
  * Implements idea of arranging books into a bookshelf.
  * Books on a bookshelf can only be accessed in a specific way so books don’t fall down;
  * You can add or remove a book only when it’s on one of the ends of the shelf.   
  * However, you can look at any book on a shelf by giving its location (starting at 0).
  * Books are identified only by their height; two books of the same height can be
  * thought of as two copies of the same book.
-*/
+ */
 
 public class Bookshelf {
 
@@ -25,7 +26,6 @@ public class Bookshelf {
 
       The elements of the bookshelf represent heights of the books
       The height of each book must be greater than 0
-
    */
 
    private ArrayList<Integer> bookshelf;
@@ -49,16 +49,6 @@ public class Bookshelf {
       this.bookshelf = new ArrayList<>(pileOfBooks);
       assert isValidBookshelf() : "Bookshelf is invalid after calling the constructor";
    }
-
-//   /**
-//    * Return an ArrayList of books that are on the bookshelf
-//    * 好像不能加这个function
-//    * PRE: bookshelf is a valid Bookshelf
-//    */
-//   public ArrayList<Integer> toArrayList() {
-//      assert isValidBookshelf() : "Bookshelf is invalid after calling the toArrayList()";
-//      return this.bookshelf;
-//   }
 
    /**
     * Inserts book with specified height at the start of the Bookshelf, i.e., it
@@ -133,7 +123,6 @@ public class Bookshelf {
    public String toString() {
       String output = this.bookshelf.toString();
       assert isValidBookshelf() : "Bookshelf is invalid after calling the toString";
-
       return output;
    }
 
