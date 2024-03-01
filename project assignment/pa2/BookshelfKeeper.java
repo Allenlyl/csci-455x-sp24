@@ -157,13 +157,13 @@ public class BookshelfKeeper {
          }
          r--;
       }
-      if (l <= size - 1 - r) {
-         System.out.println("we are moving from the front add book before index " + l);
-         System.out.println("step should be " + (l * 2 + 1));
-      } else {
-         System.out.println("we are moving from the back add book after index " + r);
-         System.out.println("step should be " + ((size - 1 - r) * 2 + 1));
-      }
+//      if (l <= size - 1 - r) {
+//         System.out.println("we are moving from the front add book before index " + l);
+//         System.out.println("step should be " + (l * 2 + 1));
+//      } else {
+//         System.out.println("we are moving from the back add book after index " + r);
+//         System.out.println("step should be " + ((size - 1 - r) * 2 + 1));
+//      }
       // return [isFromFront, position]
       // compare moving distance from the front and from the back, return the closer one
       // 1 if it is starting from the front, 0 from the back
