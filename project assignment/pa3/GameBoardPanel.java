@@ -275,13 +275,14 @@ class GameBoardPanel extends JPanel {
          Invoked when a mouse button has been pressed in this component.
        */
       public void mousePressed(MouseEvent e) {
-         
          if (visibleField.isGameOver()) return;  // don't respond to clicks if the game is over
          
          if (e.getButton() == MouseEvent.BUTTON1) { // left click
+            System.out.println("left button clicked");
             openSquare();
          }
          else if (e.getButton() == MouseEvent.BUTTON3) {  // right click
+            System.out.println("right button clicked");
             changeGuessStatus();
          }
       }
@@ -299,8 +300,8 @@ class GameBoardPanel extends JPanel {
                 // can't open it when it's a mine guess (user has to right click to "?" state first)
          if ((visibleField.getStatus(mySquare.getRow(), mySquare.getCol()) == VisibleField.MINE_GUESS) ||
                (visibleField.isUncovered(mySquare.getRow(), mySquare.getCol())))  {
-                                                                       // already has been uncovered
-            return;         
+            // already has been uncovered
+            return;
          }
          // only choose mine locations once user has opened one square   
          // but only if we're using random minefield, o.w., we use the same mine locs for every game
@@ -327,7 +328,6 @@ class GameBoardPanel extends JPanel {
             }
             
          }
-          
          updateAllSquaresViews();
                         // don't know which squares changed, so update view for all squares to match
                         // changes in the model
