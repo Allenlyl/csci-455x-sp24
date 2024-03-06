@@ -192,7 +192,7 @@ public class VisibleField {
       for (int[] direction : DIRECTIONS) {
          int curRow = row + direction[0];
          int curCol = col + direction[1];
-         if (getMineField().inRange(curRow, curCol)) {
+         if (getMineField().inRange(curRow, curCol) && !isUncovered(curRow, curCol)) {
             dfs(curRow, curCol, visited);
          }
       }

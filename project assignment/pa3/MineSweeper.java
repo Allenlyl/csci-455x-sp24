@@ -19,6 +19,8 @@ public class MineSweeper {
    
    private static int SIDE_LENGTH = 9;
    private static int NUM_MINES = 10;
+//   private static int SIDE_LENGTH = 4;
+//   private static int NUM_MINES = 2;
    
 
    public static void main(String[] args) {
