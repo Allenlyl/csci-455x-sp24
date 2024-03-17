@@ -44,12 +44,15 @@ public class VisibleField {
    private final int[][] DIRECTIONS = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
    // ----------------------------------------------------------   
-
-   // <put instance variables here>
+   // mineField information
    private MineField mineField;
+   // The current status table for each field
    private int[][] statusField;
+   // Record whether the game is over. Either by finding all the uncovered or stepping on a mine
    private boolean gameOver;
+   // Number of mines that are marked (could be wrong)
    private int numMinesMarked;
+   // Number of safe uncovered
    private int numSafeUncovered;
 
    /**
