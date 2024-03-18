@@ -1,5 +1,5 @@
-// Name:
-// USC NetID:
+// Name: Yilang Liang
+// USC NetID: yilangli
 // CS 455 PA3
 // Spring 2024
 
@@ -29,16 +29,15 @@ public class MineField {
     *                 and must be rectangular (i.e., every row is the same length)
     */
    public MineField(boolean[][] mineData) {
-      this.mineData = mineData;
-      int counter = 0;
+      this.mineData = new boolean[mineData.length][mineData[0].length];
       for (int i = 0; i < mineData.length; i++) {
-         for (int j = 0; j < mineData.length; j++) {
+         for (int j = 0; j < mineData[0].length; j++) {
+            this.mineData[i][j] = mineData[i][j];
             if (mineData[i][j]) {
-               counter++;
+               this.numMines++;
             }
          }
       }
-      this.numMines = counter;
    }
 
 
