@@ -165,8 +165,8 @@ public class VisibleField {
          System.out.println(toString());
          return false;
       }
-      boolean[][] visited = new boolean[getMineField().numRows()][getMineField().numCols()];
-      dfs(row, col, visited);
+//      boolean[][] visited = new boolean[getMineField().numRows()][getMineField().numCols()];
+      dfs(row, col);
       System.out.println("safe uncovered: " + this.getNumSafeUncovered() + " total is: " + this.getTotalSafeUncovered());
       if (this.getNumSafeUncovered() == this.getTotalSafeUncovered()) {
          this.gameOver = true;
@@ -177,27 +177,45 @@ public class VisibleField {
       return true;
    }
 
-   private void dfs(int row, int col, boolean[][] visited) {
-      // Skip uncovered
-      if (visited[row][col] || statusField[row][col] == -2) {
+   /**
+    * Helper function that uncovers the square using dfs
+    *
+    * @param row of the square
+    * @param col of the square
+    * PRE: getMineField().inRange(row, col)
+    */
+   private void dfs(int row, int col) {
+      // Skip uncovered if the block has been visited or the block is yellow
+      // Can I change it to not isUncovered?
+      if (statusField[row][col] == MINE_GUESS) {
          return;
       }
-      visited[row][col] = true;
+//      visited[row][col] = true;
       int adjMines = getMineField().numAdjacentMines(row, col);
       this.statusField[row][col] = adjMines;
       this.numSafeUncovered++;
+      // Stop searching around for any mine-adjacent squares
       if (adjMines != 0) {
          return;
       }
       for (int[] direction : DIRECTIONS) {
          int curRow = row + direction[0];
          int curCol = col + direction[1];
+         // As long as the [row, col] is in range and is not covered, but uncovered stage includes MINE_GUESS
+         // QUESTION stage will also be uncovered
          if (getMineField().inRange(curRow, curCol) && !isUncovered(curRow, curCol)) {
-            dfs(curRow, curCol, visited);
+            dfs(curRow, curCol);
          }
       }
    }
 
+   /**
+    * Helper function that uncovers the square using dfs
+    *
+    * @param row of the square
+    * @param col of the square
+    * PRE: getMineField().inRange(row, col)
+    */
    private void updateLostStatus(int row, int col) {
       statusField[row][col] = EXPLODED_MINE;
       for (int i = 0; i < getMineField().numRows(); i++) {
@@ -220,6 +238,13 @@ public class VisibleField {
 
    }
 
+   /**
+    * Helper function that uncovers the square using dfs
+    *
+    * @param row of the square
+    * @param col of the square
+    * PRE: getMineField().inRange(row, col)
+    */
    private void updateWinStatus() {
       for (int i = 0; i < getMineField().numRows(); i++) {
          for (int j = 0; j < getMineField().numCols(); j++) {
