@@ -13,9 +13,11 @@
  */
 public class MineField {
 
-   // <put instance variables here>
+   // Represents the surrounding blocks' positions
    private final int[][] DIRECTIONS = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+   // Total number of mines
    private int numMines;
+   // The data for the mines
    private boolean[][] mineData;
 
 
@@ -141,7 +143,7 @@ public class MineField {
     * @return number of rows in the field
     */
    public int numRows() {
-      return mineData.length;       // DUMMY CODE so skeleton compiles
+      return mineData.length;
    }
 
 
@@ -151,7 +153,7 @@ public class MineField {
     * @return number of columns in the field
     */
    public int numCols() {
-      return mineData.length;       // DUMMY CODE so skeleton compiles
+      return mineData.length;
    }
 
 
@@ -190,15 +192,6 @@ public class MineField {
       }
       return s;
    }
-
-//   public int getTotalSafeUncovered() {
-//       return this.getSize() - this.numMines;
-//   }
-//
-//   // <put private methods here>
-//  private int getSize() {
-//       return this.numRows() * this.numCols();
-//   }
 
 }
 

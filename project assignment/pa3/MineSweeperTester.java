@@ -11,6 +11,12 @@ public class MineSweeperTester {
             {false, false, false, false},
             {false, false, false, false}};
 
+    private static boolean[][] emptyMineFieldBut1 =
+            {{false, false, false, false},
+            {false, false, false, true},
+            {false, false, false, false},
+            {false, false, false, false}};
+
     private static boolean[][] almostEmptyMineField =
             {{false, false, false, false},
             {false, false, false, false},
@@ -25,8 +31,20 @@ public class MineSweeperTester {
         VisibleField vf1 = new VisibleField(mf1);
 
         // press on an empty field and open up all the blocks
+        System.out.println(vf1.getMineField());
+        MineField mf2 = vf1.getMineField();
+        mf2 = new MineField(almostEmptyMineField);
+        // vf1.uncover(0,0);
+        System.out.println(vf1.getMineField());
 
 
+//        MineField mf2 = new MineField(emptyMineFieldBut1);
+//        VisibleField vf2 = new VisibleField(mf2);
+//
+//        // press on an empty field and open up all the blocks
+//        System.out.println(vf2);
+//        vf2.uncover(0,0);
+//        System.out.println(vf2);
     }
 
 }

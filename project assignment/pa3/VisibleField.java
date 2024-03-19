@@ -1,5 +1,5 @@
-// Name:
-// USC NetID:
+// Name: Yilang Liang
+// USC NetID: yilangli
 // CS 455 PA3
 // Spring 2024
 
@@ -41,6 +41,8 @@ public class VisibleField {
    // losing game
    public static final int EXPLODED_MINE = 11;   // the one you uncovered by mistake (that caused
    // you to lose)
+
+   // Represents the surrounding blocks' positions
    private final int[][] DIRECTIONS = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
    // ----------------------------------------------------------   
@@ -168,7 +170,6 @@ public class VisibleField {
          System.out.println(toString());
          return false;
       }
-//      boolean[][] visited = new boolean[getMineField().numRows()][getMineField().numCols()];
       dfs(row, col);
       System.out.println("safe uncovered: " + this.getNumSafeUncovered() + " total is: " + this.getTotalSafeUncovered());
       if (this.getNumSafeUncovered() == this.getTotalSafeUncovered()) {
@@ -181,19 +182,18 @@ public class VisibleField {
    }
 
    /**
-    * Helper function that uncovers the square using dfs
+    * Helper function that uncovers from the square (row, col) using dfs
     *
     * @param row of the square
     * @param col of the square
     * PRE: getMineField().inRange(row, col)
     */
    private void dfs(int row, int col) {
-      // Skip uncovered if the block has been visited or the block is yellow
+      // Skip uncovered if the block is yellow or uncovered
       // Can I change it to not isUncovered?
-      if (statusField[row][col] == MINE_GUESS) {
+      if (statusField[row][col] == MINE_GUESS || isUncovered(row, col)) {
          return;
       }
-//      visited[row][col] = true;
       int adjMines = getMineField().numAdjacentMines(row, col);
       this.statusField[row][col] = adjMines;
       this.numSafeUncovered++;
@@ -204,16 +204,19 @@ public class VisibleField {
       for (int[] direction : DIRECTIONS) {
          int curRow = row + direction[0];
          int curCol = col + direction[1];
-         // As long as the [row, col] is in range and is not covered, but uncovered stage includes MINE_GUESS
-         // QUESTION stage will also be uncovered
-         if (getMineField().inRange(curRow, curCol) && !isUncovered(curRow, curCol)) {
+         // As long as the [row, col] is in range, explore from the square.
+         // If the square disqualifies, it will be returned in the condition above
+         if (getMineField().inRange(curRow, curCol)) {
             dfs(curRow, curCol);
          }
       }
    }
 
    /**
-    * Helper function that uncovers the square using dfs
+    * Update the status board for lost game, the current square will be marked as EXPLODED_MINE
+    * The exploded mine is shown by a red square. Any previously made incorrect guesses are
+    * shown with an X though them, the correctly guessed mine locations are still shown as
+    * guesses (yellow), and the other unopened mines are shown as "mines".
     *
     * @param row of the square
     * @param col of the square
@@ -235,25 +238,21 @@ public class VisibleField {
                   statusField[i][j] = INCORRECT_GUESS;
                }
             }
-
          }
       }
-
    }
 
    /**
-    * Helper function that uncovers the square using dfs
-    *
-    * @param row of the square
-    * @param col of the square
-    * PRE: getMineField().inRange(row, col)
+    * Update the status board for won game, winning the game means uncovering all the empty
+    * or guessed mines as MINE_GUESS
     */
    private void updateWinStatus() {
       for (int i = 0; i < getMineField().numRows(); i++) {
          for (int j = 0; j < getMineField().numCols(); j++) {
             // if there is a mine in the current location
             if (mineField.hasMine(i, j)) {
-               // if the status is covered or question, make it mine(black)
+               // if the status is covered or question, make it MINE_GUESS(yellow)
+               // should i change it to just !isUncovered
                if (statusField[i][j] == COVERED || statusField[i][j] == QUESTION) {
                   statusField[i][j] = MINE_GUESS;
                }
@@ -290,6 +289,10 @@ public class VisibleField {
       return true;
    }
 
+   /**
+    * toString method
+    * @return string that represents the statusField
+    */
    public String toString() {
       String s = "";
       for (int i = 0; i < mineField.numRows(); i++) {
@@ -302,21 +305,35 @@ public class VisibleField {
    }
 
 
-   // <put private methods here>
+   /**
+    * The number of squares that are safely uncovered
+    * @return the number of squares that are safely uncovered
+    */
    private int getNumSafeUncovered() {
       return this.numSafeUncovered;
    }
 
+   /**
+    * The total squares that have to be safely uncovered to win the game
+    * @return the total squares that have to be safely uncovered to win the game
+    */
    private int getTotalSafeUncovered() {
       int size = this.getMineField().numRows() * this.getMineField().numCols();
-      System.out.println("total safe uncovered is " + (size - this.getNumMines()));
       return size - this.getNumMines();
    }
 
+   /**
+    * The number of mines that are marked in the current status field(could be wrong)
+    * @return the number of mines that are marked in the current status field
+    */
    private int getNumMinesMarked() {
       return this.numMinesMarked;
    }
 
+   /**
+    * The total number of mines that are in the mineField
+    * @return the total number of mines that are in the mineField
+    */
    private int getNumMines() {
       return this.getMineField().numMines();
    }
