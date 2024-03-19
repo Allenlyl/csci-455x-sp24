@@ -153,7 +153,7 @@ public class MineField {
     * @return number of columns in the field
     */
    public int numCols() {
-      return mineData.length;
+      return mineData[0].length;
    }
 
 
